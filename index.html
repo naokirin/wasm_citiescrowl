@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <link data-trunk rel="rust" data-wasm-opt="z" data-weak-refs>
+    <link data-trunk rel="scss" href="index.scss"/>
+    <script>// load css immediately for animation.</script>
+  </head>
+  <body>
+    <div id="citiescrowl">
+        <div id="splash">
+            <h1>流れる<br>SHI・KU・CHO・SHON</h1>
+            <h2>created by naokirin</h2>
+        </div>
+        <div id="citiescrowl_background" class="background">
+            <div id="citiescrowl_contents">
+            </div>
+        </div>
+        <div class="popup_wrap">
+            <input id="trigger" type="checkbox">
+            <div id="popup_overlay" class="popup_overlay">
+              <label for="trigger" class="popup_trigger"></label>
+              <div class="popup_content">
+                  <label for="trigger" class="close_btn">×</label>
+                  <p id="popup_content_prefecture"></p>
+                  <p id="popup_content_city"></p>
+                  <p id="popup_content_city_kana"></p>
+                  <a id="popup_content_wikipedia" href="" target="_blank" rel="noopener">Wikipedia</a>
+                  <iframe id="popup_content_google_map" src="" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              </div>
+            </div>
+          </div>
+    </div>
+  </body>
+</html>
+W
