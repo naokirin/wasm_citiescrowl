@@ -27,6 +27,8 @@ pub struct CityName {
     city: String,
     prefecture_kana: String,
     city_kana: String,
+    latitude: f64,
+    longitude: f64,
 }
 
 static mut RECORDS: Vec<CityName> = vec![];
@@ -133,7 +135,9 @@ async fn fetch() -> Result<Vec<CityName>, ()> {
             prefecture: String::from(&record[0]),
             city: String::from(&record[1]),
             prefecture_kana: String::from(&record[2]),
-            city_kana: String::from(&record[3])
+            city_kana: String::from(&record[3]),
+            latitude: record[4].parse::<f64>().unwrap(),
+            longitude: record[5].parse::<f64>().unwrap(),
         };
 
         results.push(city);
