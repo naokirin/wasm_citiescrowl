@@ -89,7 +89,7 @@ async fn append_text() {
         let i = rng.gen_range(0..RECORDS.len());
         label.set_inner_html(&RECORDS[i].city);
 
-        let closure:Closure<dyn FnMut(_)> = Closure::wrap(Box::new(move |_event: web_sys::MouseEvent| {
+        let onclick:Closure<dyn FnMut(_)> = Closure::wrap(Box::new(move |_event: web_sys::MouseEvent| {
             let document = web_sys::window().unwrap().document().unwrap();
             let city_name = RECORDS[i].city.split("（").collect::<Vec<_>>()[0];
             let city_text = document.get_element_by_id("popup_content_city").unwrap();
@@ -103,8 +103,24 @@ async fn append_text() {
             google_map.set_attribute("src", format!("https://www.google.com/maps?output=embed&q={}{}", &RECORDS[i].prefecture, city_name).as_str()).unwrap();
             wikipedia.set_attribute("href", format!("https://ja.wikipedia.org/wiki/{}", RECORDS[i].city.replace("（", "_(")).replace("）", ")").as_str()).unwrap();
         }));
-        label.add_event_listener_with_callback("click", closure.as_ref().unchecked_ref()).unwrap();
-        closure.forget();
+        label.add_event_listener_with_callback("click", onclick.as_ref().unchecked_ref()).unwrap();
+        onclick.forget();
+
+        let onenter: Closure<dyn FnMut(_)> = Closure::wrap(Box::new(move |_event: web_sys::Event| {
+            let document = web_sys::window().unwrap().document().unwrap();
+            let prefecture = document.get_element_by_id("citiescrowl_background_prefecture").unwrap();
+            prefecture.set_attribute("style", format!("background-image: url('images/prefectures/{}.png'); display: block;", RECORDS[i].prefecture).as_str()).unwrap();
+        }));
+        label.add_event_listener_with_callback("mouseenter", onenter.as_ref().unchecked_ref()).unwrap();
+        onenter.forget();
+
+        let onleave: Closure<dyn FnMut(_)> = Closure::wrap(Box::new(move |_event: web_sys::Event| {
+            let document = web_sys::window().unwrap().document().unwrap();
+            let prefecture = document.get_element_by_id("citiescrowl_background_prefecture").unwrap();
+            prefecture.set_attribute("style","display: none;").unwrap();
+        }));
+        label.add_event_listener_with_callback("mouseleave", onleave.as_ref().unchecked_ref()).unwrap();
+        onleave.forget();
     }
 
     wasm_bindgen_futures::spawn_local(remove_text_after(label, 20000));
